@@ -1,1 +1,901 @@
-'n Afrkaans grapppie ai
+<!DOCTYPE html>
+<html lang="af">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vra vir Frikkie</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #FF00FF, #FF50a4);
+    color: white;
+}
+
+.container {
+    max-width: 950px;
+    margin: auto;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 58px;
+    margin: 10px 0;
+    color: #ffb52e;
+    text-shadow: 3px 3px 8px black;
+}
+
+.subtitle {
+    font-size: 20px;
+    color: #dddddd;
+    margin-bottom: 35px;
+}
+
+.main-box {
+    background: rgba(0, 0, 0, 0.78);
+    border: 2px solid #ffb52e;
+    border-radius: 20px;
+    padding: 45px 30px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.6);
+    text-align: center;
+}
+
+.joke-box {
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.box-divider {
+    border: none;
+    border-top: 2px dashed rgba(255, 181, 46, 0.4);
+    margin: 35px 0;
+}
+
+.category {
+    color: #ffb52e;
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.joke {
+    font-size: 27px;
+    line-height: 1.65;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+button {
+    padding: 15px 22px;
+    border: none;
+    border-radius: 12px;
+    background: #ffb52e;
+    color: #111111;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    filter: brightness(1.15);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+.dark-button {
+    background: #6b2020;
+    color: white;
+}
+
+.naughty-button {
+    background: #8a2860;
+    color: white;
+}
+
+.toilet-button {
+    background: #365f6b;
+    color: white;
+}
+
+.today-button {
+    background: #315c31;
+    color: white;
+}
+
+.counter {
+    margin-top: 25px;
+    color: #aaaaaa;
+    font-size: 14px;
+}
+
+.frikkie {
+    margin-top: 35px;
+    font-size: 18px;
+    color: #ffb52e;
+}
+
+.ai-box {
+    text-align: left;
+}
+
+.ai-title {
+    color: #ffb52e;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.ai-status {
+    font-size: 13px;
+    color: #aaaaaa;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.ai-chat-log {
+    max-height: 320px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ai-msg {
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 85%;
+}
+
+.ai-msg.user {
+    align-self: flex-end;
+    background: #ffb52e;
+    color: #111111;
+}
+
+.ai-msg.frikkie {
+    align-self: flex-start;
+    background: #333333;
+    color: white;
+}
+
+.ai-input-row {
+    display: flex;
+    gap: 10px;
+}
+
+.ai-input-row input {
+    flex: 1;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 2px solid #ffb52e;
+    background: #1a1a1a;
+    color: white;
+    font-size: 16px;
+}
+
+.ai-input-row input:focus {
+    outline: none;
+    filter: brightness(1.15);
+}
+
+.ai-input-row button {
+    white-space: nowrap;
+}
+
+footer {
+    margin-top: 50px;
+    color: #777777;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+
+    h1 {
+        font-size: 40px;
+    }
+
+    .joke {
+        font-size: 22px;
+    }
+
+    button {
+        width: 100%;
+        max-width: 320px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1>😂 Vra vir Frikkie</h1>
+
+    <div class="subtitle">
+        Afrikaanse grappies, toilet-humor, stout praatjies en ander swak besluite.
+    </div>
+
+
+    <div class="main-box">
+
+        <div class="ai-box">
+
+            <div class="ai-title">
+                🤖 Gesels met Frikkie (AI)
+            </div>
+
+            <div class="ai-status" id="aiStatus">
+                Kyk of Frikkie se brein beskikbaar is...
+            </div>
+
+            <div class="ai-chat-log" id="aiChatLog"></div>
+
+            <div class="ai-input-row">
+                <input
+                    type="text"
+                    id="aiInput"
+                    placeholder="Vra Frikkie enige vraag..."
+                    onkeydown="if(event.key==='Enter'){sendToFrikkie();}"
+                    disabled
+                >
+                <button onclick="sendToFrikkie()" id="aiSendButton" disabled>
+                    Stuur
+                </button>
+            </div>
+
+        </div>
+
+
+        <hr class="box-divider">
+
+
+        <div class="joke-box">
+
+            <div class="category" id="category">
+                GRAPPIE VAN DIE DAG
+            </div>
+
+            <div class="joke" id="joke">
+                Frikkie dink...
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <button onclick="newJoke()">
+                😂 Nog 'n grappie
+            </button>
+
+            <button class="toilet-button" onclick="toiletJoke()">
+                🚽 Toilet-humor
+            </button>
+
+            <button class="naughty-button" onclick="naughtyJoke()">
+                😏 Stoute Frikkie
+            </button>
+
+            <button class="dark-button" onclick="darkJoke()">
+                💀 Donker humor
+            </button>
+
+            <button class="today-button" onclick="dailyJoke()">
+                📅 Grappie van die dag
+            </button>
+
+        </div>
+
+
+        <div class="counter" id="counter">
+            Frikkie is gereed.
+        </div>
+
+
+        <div class="frikkie">
+            🤔 Frikkie sê: "Moenie kwaad word nie. Jy het self op die knoppie gedruk."
+        </div>
+
+    </div>
+
+
+    <footer>
+        Vra vir Frikkie © 2026
+        <br>
+        Volwasse humor — gebruik met 'n sin vir humor.
+    </footer>
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   GEWONE GRAPPIES
+   ========================================= */
+
+const jokes = [
+
+"Hoekom het die rekenaar dokter toe gegaan? Hy het 'n virus gehad.",
+
+"Hoekom kan 'n fiets nie alleen staan nie? Want hy is twee-moeg.",
+
+"Wat sê die een muur vir die ander muur? Ons ontmoet by die hoek.",
+
+"Hoekom het die tamatie rooi geword? Hy het die slaaisous gesien.",
+
+"Wat noem jy 'n hond wat kan tower? 'n Labracadabrador.",
+
+"Hoekom het die boek dokter toe gegaan? Hy het 'n seer ruggraat gehad.",
+
+"Wat sê die een battery vir die ander? Ek hou van jou tot die einde van my krag.",
+
+"Hoekom is die kalender altyd gestres? Sy dae is getel.",
+
+"Wat sê 'n nul vir 'n agt? Lekker belt.",
+
+"Hoekom is die wiskundeboek hartseer? Hy het te veel probleme.",
+
+"Hoekom was die rekenaar koud? Hy het sy Windows oopgelos.",
+
+"Wat sê die tand vir die tandarts? Hou op om in my sake te krap.",
+
+"Ek is nie lui nie. Ek is net op batterybesparing.",
+
+"Ek het vandag baie gedoen. Ek het daaraan gedink om iets te doen.",
+
+"My beursie is soos 'n ui. Elke keer as ek dit oopmaak, wil ek huil.",
+
+"Ek het besluit om vroeg op te staan. My bed het beswaar aangeteken.",
+
+"Ek probeer georganiseerd wees. Ek weet net nie waar ek my organisasie gelos het nie.",
+
+"Ek het vir myself gesê ek moet meer oefen. Toe ignoreer ek myself.",
+
+"Ek is nie laat nie. Ek arriveer net volgens my eie tydsone.",
+
+"Ek het 'n plan vir môre. Môre het egter ander planne.",
+
+"Ek het vandag 'n moeilike besluit geneem: koffie of nog koffie.",
+
+"Ek is baie goed met besluite. Ek maak net gewoonlik die verkeerde een."
+
+];
+
+
+/* =========================================
+   TOILET HUMOR
+   ========================================= */
+
+const toiletJokes = [
+
+"Ek het gister so lank op die toilet gesit dat my foon begin vra het of ek nog by die huis woon.",
+
+"Die toilet is die enigste plek waar jy kan sê: 'Ek het net vyf minute nodig,' en almal weet jy lieg.",
+
+"Ek het my toiletpapier laat val. Dit was 'n baie lae punt in my lewe.",
+
+"Ek wou 'n grap oor poep vertel, maar ek het besluit om dit te laat gaan.",
+
+"Die toilet het vir my gesê ek moet ophou om alles persoonlik te vat. Ek het dit nie gevat nie.",
+
+"Ek het 'n boek in die badkamer gelos. Dit is nou amptelik 'n langtermynverhouding.",
+
+"Jy weet jy is 'n volwassene wanneer jy opgewonde raak oor 'n nuwe pak toiletpapier.",
+
+"Ek het my maag gevra wat hy wil hê. Hy het gesê: 'Ons sal jou later laat weet.'",
+
+"Daar is twee soorte mense: mense wat die toiletpapier korrek ophang en mense wat verkeerd is.",
+
+"Ek het 'n duur toilet gekoop. Nou kan ek ten minste in luukse sit en spyt wees oor my lewe.",
+
+"My maag en ek het 'n ooreenkoms: ek gee hom kos en hy gee my geen waarskuwing nie.",
+
+"Ek het gedink ek het 'n probleem. Toe besef ek die toilet is verstop. Nou het ek 'n groter probleem.",
+
+"Ek het so lank my poep opgehou dat dit later soos 'n kontrakonderhandeling gevoel het.",
+
+"Die badkamer is my gunsteling plek om aan my lewe te dink. Niemand steur jou daar nie.",
+
+"Ek het gesê ek gaan gou badkamer toe. Vyf-en-veertig minute later het ek 'n nuwe lewensfilosofie.",
+
+"Daar is niks meer vernederend as om by iemand se huis te wees en te besef die toiletpapier is klaar nie.",
+
+"Ek het die toilet skoongemaak. Dit het vyf minute later weer soos 'n openbare toilet gelyk.",
+
+"My maag maak meer geraas as my kar.",
+
+"Ek het 'n baie sterk maag. Hy het net 'n baie swak werksetiek.",
+
+"Die toilet is 'n plek van vrede. Tot iemand aan die deur klop en vra: 'Is jy amper klaar?'"
+
+];
+
+
+/* =========================================
+   STOUT / VOLWASSE HUMOR
+   ========================================= */
+
+const naughtyJokes = [
+
+"Sy het gesê: 'Praat vuil met my.' Ek het toe die rekening vir die elektrisiteit en munisipaliteit vir haar gestuur.",
+
+"Sy vra: 'Wat trek jou aan?' Ek sê: 'Tans? 'n Salaris wat betyds betaal word.'",
+
+"Ek het probeer romanties wees. Ek het kerse aangesteek. Toe besef ek ek het steeds die wasgoed op die bed gelos.",
+
+"Sy sê: 'Jy is nie romanties nie.' Ek sê: 'Ek het mos vir jou gesê jy kan eerste kies wat ons vir aandete bestel.'",
+
+"Ek het vir haar gesê ek het 'n groot geheim. Sy het nader geskuif. Ek het gesê: 'Ek het die laaste sjokolade geëet.' Sy het die verhouding beëindig.",
+
+"Ek het gevra: 'Wat wil jy vanaand doen?' Sy sê: 'Ek weet nie.' Ek sê: 'Perfek. Ek ook nie.'",
+
+"Ek het vir haar 'n sexy boodskap gestuur. Sy het geantwoord: 'Het jy dit per ongeluk vir my gestuur?'",
+
+"Romantiek is om die laaste skyfie pizza vir iemand te los. Ware liefde is om dit te los en dan te hoop hulle sê nee.",
+
+"Ek wou 'n romantiese aand beplan. Toe kyk ek na my bankrekening en besluit Netflix is ook intimiteit.",
+
+"Sy sê ek moet meer aandag gee. Ek het gevra: 'Aan jou?' Sy sê: 'Nee, aan die huis.' Ek het geweet die romantiek is verby.",
+
+"Ek het gevra wat haar gunsteling posisie is. Sy sê: 'Bestuurder.' Ek moes toe besef sy praat van die motor.",
+
+"Ek het probeer om sexy te wees. Toe trek ek my maag in. Na twee minute het ek besef ek gaan flou word.",
+
+"Ek het vir haar gesê ek is goed met romantiek. Sy het gesê: 'Bewys dit.' Ek het die skottelgoed gewas.",
+
+"Sy sê: 'Ek hou van mans met 'n goeie sin vir humor.' Ek sê: 'Gelukkig, want my bankrekening het niks anders nie.'",
+
+"Ek het gevra of sy van spontane mense hou. Sy sê ja. Ek sê: 'Goed, ek het sopas ons afspraak gekanselleer.'",
+
+"Ek wou 'n sexy verrassing vir my maat beplan. Ek het die huis skoongemaak. Sy was meer opgewonde as wat ek verwag het.",
+
+"Die probleem met flirt is dat jy soms eers drie dae later besef iemand het met jou geflirt.",
+
+"Ek het vir haar gesê sy laat my hart vinniger klop. Sy het gesê: 'Dis seker die koffie.'",
+
+"Ek het probeer om met my voorkoms te beïndruk. Toe besef ek my persoonlikheid is my enigste opsie.",
+
+"Sy vra: 'Wat is jou grootste fantasie?' Ek sê: 'Om 'n hele maand se salaris oor te hê wanneer die maand eindig.'",
+
+"Ek het gesê ek is gereed vir 'n wilde aand. Toe raak ek 21:30 aan die slaap.",
+
+"Romantiek is maklik: kyk diep in haar oë, glimlag en vra of sy dalk die laaste stuk pizza gaan eet.",
+
+"Ek het gesê: 'Kom ons maak vanaand onvergeetlik.' Ons het toe albei ons fone verloor.",
+
+"Sy het gesê ek moet iets sexy aantrek. Ek het my duurste onderbroek aangetrek. Sy het gesê: 'Dis dieselfde een as gister.'",
+
+"Ek het probeer om 'n sexy stem te gebruik. Dit het meer soos 'n verkoue geklink.",
+
+"Ek vra nie veel in 'n verhouding nie. Net lojaliteit, eerlikheid, goeie kommunikasie en iemand wat my nie oordeel wanneer ek die hele koek eet nie.",
+
+"Ek het gedink die aand gaan baie romanties wees. Toe begin die hond blaf. Selfs hy wou betrokke wees.",
+
+"Sy het gesê: 'Jy moet soms die inisiatief neem.' Ek het toe die restaurant bespreek. Ek weet nie hoekom sy so verbaas was nie.",
+
+"Ek het 'n romantiese boodskap geskryf en dit drie keer nagegaan. Toe stuur ek dit vir my ma.",
+
+"Ek het probeer om misterieus te wees. Sy het net gedink ek het vergeet wat ek wou sê."
+
+];
+
+
+/* =========================================
+   DONKER HUMOR
+   ========================================= */
+
+const darkJokes = [
+
+"Ek het vir die grafgrawer gevra hoe sy werk gaan. Hy sê dit is 'n doodloopstraat.",
+
+"Ek wou 'n grap oor die dood vertel, maar dit was te vroeg.",
+
+"Die begrafnisondernemer het gesê ek moet my lewe geniet. Hy weet seker iets wat ek nie weet nie.",
+
+"Ek het 'n donker sin vir humor. Gelukkig hoef ek nie die lig daarvoor aan te sit nie.",
+
+"Ek wou 'n grap oor 'n lyk vertel. Niemand het gereageer nie. Die gehoor was doodstil.",
+
+"Die begraafplaas is 'n baie gewilde plek. Mense is letterlik mal daaroor.",
+
+"Ek het vir die dood gesê ek is nie gereed nie. Hy het gesê: 'Geen probleem nie, ek kom later terug.'",
+
+"Ek het gedink my lewe kan nie erger raak nie. Toe besluit die lewe om kreatief te wees.",
+
+"Die dokter het gesê ek moet ophou stres. Ek het gevra hoe. Hy het gesê: 'Probeer om nie daaroor te stres nie.'",
+
+"My slaaproetine is soos my toekoms: niemand weet wat aangaan nie.",
+
+"Ek is nie bang vir die donker nie. Ek is bang vir my bankrekening wanneer die lig aangaan.",
+
+"Ek het probeer om positief te wees. Toe kyk ek na my rekening.",
+
+"Ek wou my probleme begrawe. Toe besef ek hulle het 'n baie goeie geheue.",
+
+"Die lewe is kort. Sommige mense maak seker dit voel langer.",
+
+"Ek het gedink ek het die bodem bereik. Toe begin ek grawe.",
+
+"Ek het vir die lewe gesê ek kan alles hanteer. Die lewe het dit as 'n uitdaging aanvaar.",
+
+"Ek het my toekoms probeer beplan. My verlede het begin lag.",
+
+"Ek is nie bang vir mislukking nie. Ek het al genoeg ervaring daarmee.",
+
+"Ek het 'n lys van al my foute gemaak. Dit is nou 'n boek.",
+
+"Ek het vir my stres gesê om weg te gaan. Hy het ingetrek.",
+
+"Ek het probeer om my lewe in orde te kry. Die lewe het gesê: 'Nee.'",
+
+"Ek het gedink dinge kan nie erger word nie. Dit was 'n gevaarlike gedagte.",
+
+"Politiek is die enigste plek waar iemand kan belowe om jou lewe beter te maak terwyl jou bankrekening stilweg 'n testament opstel.",
+
+"Die politikus het gesê: 'Ons het 'n plan.' Die bevolking het gevra: 'Is daar 'n plan B?' Hy sê: 'Ja, blameer die vorige regering.'",
+
+"Ek het vir 'n politikus gevra wanneer dinge beter gaan word. Hy het gesê: 'Na die volgende verkiesing.' Ek het gevra: 'Watter verkiesing?' Hy het gesê: 'Presies.'",
+
+"Die regering en die dood het een ding in gemeen: albei kom uiteindelik vir almal. Die verskil is dat die regering eers belasting vra.",
+
+"Politieke beloftes is soos begrafnisblomme: dit lyk mooi wanneer dit aankom, maar niemand verwag dat dit iets gaan verander nie.",
+
+"Die politikus het gesê hy sal tot die dood toe vir die mense werk. Die mense het gewonder wie se dood hy bedoel.",
+
+"Ek het besluit om nie meer oor politiek te stres nie. My bankrekening het gesê ek moet aanhou.",
+
+"Die verkiesingsveldtog was baie positief. Almal het belowe om die land te red. Niemand het verduidelik wie dit laat sink het nie.",
+
+"Politiek is soos 'n begrafnis: almal dra mooi klere, almal praat ernstig en iemand gaan uiteindelik sê: 'Ons moet vorentoe beweeg.'",
+
+"Ek het vir die dood gevra wanneer hy aftree. Hy het gesê: 'Ek is 'n permanente posisie. Ek het selfs beter werksekuriteit as 'n politikus.'",
+
+"Die politikus het gesê: 'Ek sal nooit die mense vergeet nie.' Die mense het geantwoord: 'Ons hoop jy vergeet ons belastingrekening ook.'",
+
+"Waarom hou politici van verkiesings? Omdat dit die enigste tyd is wanneer almal vir hulle glimlag voordat hulle weer begin kla.",
+
+"Die dood het ten minste een voordeel: hy maak nie verkiesingsbeloftes nie.",
+
+"Ek het 'n politikus en 'n begrafnisondernemer saam in 'n kamer gesien. Ek het gevra wat aangaan. Hulle het gesê hulle bespreek langtermynbeplanning.",
+
+"Politiek is vreemd. Jy kan iemand vertrou met jou stem, maar nie noodwendig met jou beursie nie.",
+
+"Die dood sê: 'Ek kom wanneer my tyd reg is.' 'n Politikus sê: 'Ek kom wanneer die verkiesing naby is.'",
+
+"Ek het gevra waarom politici altyd glimlag. Hulle het gesê dit is makliker as om die begroting te verduidelik.",
+
+"Die probleem met politieke humor is dat die werklikheid dikwels die beter grap vertel.",
+
+"Die begrafnisondernemer het 'n nuwe diens begin: politieke beloftes begrawe. Hy het vinnig ryk geword.",
+
+"Ek het vir die politiek gesê ek wil vrede hê. Die politiek het gesê: 'Ons sal dit oorweeg ná die volgende verkiesing.'",
+
+"Politici sê verandering kom. Die dood sê ook dit kom. Ten minste hou die dood by sy woord.",
+
+"Ek het my stem uitgebring. Nou hoop ek hy kom veilig terug.",
+
+"Die politikus het gesê: 'Ons sal alles doen wat nodig is.' Die belastingbetaler het geantwoord: 'Dis presies waarvoor ek bang is.'",
+
+"Die dood diskrimineer nie. Ryk, arm, beroemd of onbekend — almal kry uiteindelik dieselfde afspraak.",
+
+"Politiek is die kuns om jou vyand te blameer vir vandag en jou voorganger vir gister.",
+
+"Ek wou 'n grap oor die regering vertel, maar ek was bang hulle maak dit 'n nuwe belasting.",
+
+"Die dood het ten minste goeie tydsbestuur. Hy hou nooit 'n vergadering vir drie uur en sê dan niks nie.",
+
+"Die politikus het gesê: 'Ons kyk na die groter prentjie.' Die belastingbetaler het gesê: 'Kan julle dalk eers na my kleiner bankrekening kyk?'",
+
+"Die begraafplaas is waarskynlik die enigste plek waar niemand meer oor politiek stry nie.",
+
+"Ek vertrou die dood meer as politieke beloftes. Hy het ten minste nog nooit gesê: 'Net nog vyf jaar.'",
+
+"Politiek en die dood het iets gemeen: jy weet nooit presies wanneer iets gaan gebeur nie, maar almal weet dit gaan uiteindelik gebeur.",
+
+"Ek het vir die politikus gevra of hy bang is vir die dood. Hy sê nee, want hy is gewoond daaraan dat mense hom elke verkiesing begrawe en hom dan weer opgrawe.",
+
+"Die regering het belowe om die koste van lewe te verminder. Ek het gevra of hulle dalk eers die koste van dood kan verduidelik.",
+
+"Ek het 'n begrafnis bygewoon waar almal stil was. Dit was die eerste politieke vergadering wat ek ooit geniet het.",
+
+"Die politikus het gesê: 'Ons laat niemand agter nie.' Ek het na die staatsdiens gekyk en gedink: 'Is jy seker?'",
+
+"Die dood is ten minste demokraties. Hy gee almal uiteindelik dieselfde uitslag.",
+
+"Ek het besluit om my politieke mening op my grafsteen te sit. Toe besef ek niemand gaan daaroor met my argumenteer nie.",
+
+"Die politikus het gesê: 'Ons sal geskiedenis maak.' Ek hoop net iemand skryf die voetnote.",
+
+"Ek het vir die dood gevra of hy in politiek belangstel. Hy sê: 'Nee, ek hou daarvan wanneer mense self hul lewens opmors.'",
+
+"Die verkiesing is soos 'n begrafnis met gratis plakkate: almal praat oor die toekoms en niemand wil oor die verlede verantwoordelikheid aanvaar nie.",
+
+"Ek het 'n politikus gevra wat sy grootste prestasie is. Hy het gesê: 'Ek is nog steeds hier.' Ek het gesê: 'Dis eintlik nogal indrukwekkend.'"
+
+];
+
+
+/* =========================================
+   TEL GRAPPIES
+   ========================================= */
+
+let jokeCount = 0;
+
+
+/* =========================================
+   WYS GEWONE GRAPPIE
+   ========================================= */
+
+function newJoke() {
+
+    const index =
+        Math.floor(Math.random() * jokes.length);
+
+    showJoke(
+        "😂 AFRIKAANSE GRAPPIE",
+        jokes[index]
+    );
+}
+
+
+/* =========================================
+   WYS TOILET GRAPPIE
+   ========================================= */
+
+function toiletJoke() {
+
+    const index =
+        Math.floor(Math.random() * toiletJokes.length);
+
+    showJoke(
+        "🚽 TOILET-HUMOR",
+        toiletJokes[index]
+    );
+}
+
+
+/* =========================================
+   WYS STOUT GRAPPIE
+   ========================================= */
+
+function naughtyJoke() {
+
+    const index =
+        Math.floor(Math.random() * naughtyJokes.length);
+
+    showJoke(
+        "😏 STOUTE FRIKKIE",
+        naughtyJokes[index]
+    );
+}
+
+
+/* =========================================
+   WYS DONKER GRAPPIE
+   ========================================= */
+
+function darkJoke() {
+
+    const index =
+        Math.floor(Math.random() * darkJokes.length);
+
+    showJoke(
+        "💀 DONKER HUMOR",
+        darkJokes[index]
+    );
+}
+
+
+/* =========================================
+   ALGEMENE FUNKSIE
+   ========================================= */
+
+function showJoke(category, joke) {
+
+    document.getElementById("category").innerText =
+        category;
+
+    document.getElementById("joke").innerText =
+        joke;
+
+    jokeCount++;
+
+    document.getElementById("counter").innerText =
+        "Frikkie het al " +
+        jokeCount +
+        " grappie(s) vir jou vertel.";
+
+}
+
+
+/* =========================================
+   GRAPPIE VAN DIE DAG
+   ========================================= */
+
+function dailyJoke() {
+
+    const today = new Date();
+
+    const dayNumber =
+        today.getFullYear() * 10000 +
+        (today.getMonth() + 1) * 100 +
+        today.getDate();
+
+    const index =
+        dayNumber % jokes.length;
+
+    document.getElementById("category").innerText =
+        "📅 GRAPPIE VAN DIE DAG";
+
+    document.getElementById("joke").innerText =
+        jokes[index];
+
+    document.getElementById("counter").innerText =
+        "Hierdie is Frikkie se grappie vir vandag.";
+
+}
+
+
+/* =========================================
+   BEGIN
+   ========================================= */
+
+dailyJoke();
+
+
+/* =========================================
+   AI GEDEELTE (Chrome se ingeboude AI)
+   ========================================= */
+
+let frikkieSession = null;
+
+const aiStatus = document.getElementById("aiStatus");
+const aiInput = document.getElementById("aiInput");
+const aiSendButton = document.getElementById("aiSendButton");
+const aiChatLog = document.getElementById("aiChatLog");
+
+const FRIKKIE_SYSTEM_PROMPT =
+    "Jy is Frikkie, 'n vriendelike Afrikaanse assistent. Antwoord altyd " +
+    "in Afrikaans, op 'n duidelike, behulpsame en informatiewe manier. " +
+    "Gee reguit, korrekte antwoorde en verduidelik dinge eenvoudig. Moenie " +
+    "grappe maak of oordrewe humoristies wees nie, tensy iemand spesifiek " +
+    "vir 'n grap vra. Hou antwoorde bondig, tensy iemand vra vir meer detail.";
+
+
+async function setupFrikkieAI() {
+
+    if (!("LanguageModel" in self)) {
+        aiStatus.innerText =
+            "Frikkie se AI-brein werk nie in hierdie blaaier nie. " +
+            "Gebruik Chrome 138+ (rekenaar) en aktiveer die " +
+            "'Prompt API for Gemini Nano' vlag by chrome://flags.";
+        return;
+    }
+
+    try {
+
+        const availability = await LanguageModel.availability();
+
+        if (availability === "unavailable") {
+            aiStatus.innerText =
+                "Frikkie se AI-brein is nie op hierdie toestel beskikbaar nie.";
+            return;
+        }
+
+        aiStatus.innerText =
+            "Frikkie se brein laai tans (mag 'n rukkie neem)...";
+
+        frikkieSession = await LanguageModel.create({
+            initialPrompts: [
+                { role: "system", content: FRIKKIE_SYSTEM_PROMPT }
+            ],
+            monitor(m) {
+                m.addEventListener("downloadprogress", (e) => {
+                    aiStatus.innerText =
+                        "Laai Frikkie se brein af... " +
+                        Math.floor(e.loaded * 100) + "%";
+                });
+            }
+        });
+
+        aiStatus.innerText = "Frikkie is gereed om te gesels!";
+        aiInput.disabled = false;
+        aiSendButton.disabled = false;
+
+    } catch (err) {
+        aiStatus.innerText =
+            "Kon nie Frikkie se AI-brein oopmaak nie. Probeer weer later.";
+        console.error(err);
+    }
+}
+
+
+function addAiMessage(sender, text) {
+
+    const msg = document.createElement("div");
+    msg.className = "ai-msg " + sender;
+    msg.innerText = text;
+
+    aiChatLog.appendChild(msg);
+    aiChatLog.scrollTop = aiChatLog.scrollHeight;
+
+    return msg;
+}
+
+
+async function sendToFrikkie() {
+
+    const question = aiInput.value.trim();
+
+    if (!question || !frikkieSession) {
+        return;
+    }
+
+    aiInput.value = "";
+    aiInput.disabled = true;
+    aiSendButton.disabled = true;
+
+    addAiMessage("user", question);
+
+    const frikkieMsg = addAiMessage("frikkie", "Frikkie dink...");
+
+    try {
+
+        const stream = frikkieSession.promptStreaming(question);
+        let fullText = "";
+
+        for await (const chunk of stream) {
+            fullText += chunk;
+            frikkieMsg.innerText = fullText;
+            aiChatLog.scrollTop = aiChatLog.scrollHeight;
+        }
+
+    } catch (err) {
+        frikkieMsg.innerText =
+            "Eina, Frikkie het gehapeer. Probeer weer.";
+        console.error(err);
+    }
+
+    aiInput.disabled = false;
+    aiSendButton.disabled = false;
+    aiInput.focus();
+}
+
+
+setupFrikkieAI();
+
+</script>
+
+</body>
+</html>
